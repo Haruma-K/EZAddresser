@@ -1,0 +1,16 @@
+{
+  "name": "com.harumak.ezaddresser",
+  "displayName": "EZAddresser",
+  "version": "0.1.0",
+  "unity": "2020.1",
+  "license": "MIT",
+  "dependencies": {
+    "com.unity.addressables": "1.8.5"
+  },
+  "author": {
+    "name": "Haruki Yano a.k.a Haruma:K",
+    "url": "https://github.com/Haruma-K"
+  },
+  "type": "tool",
+  "description": "EZAddresser automates the process of assigning addresses in the Addressable asset system."
+}
