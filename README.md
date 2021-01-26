@@ -17,7 +17,7 @@ Open Packages/manifest.json and add the following to the dependencies block.
 ```json
 {
     "dependencies": {
-        "com.harumak.ezaddresser": "https://github.com/Haruma-K/EZAddresser?path=/Packages/com.harumak.ezaddresser#1.0.0"
+        "com.harumak.ezaddresser": "https://github.com/Haruma-K/EZAddresser.git?path=/Packages/com.harumak.ezaddresser"
     }
 }
 ```
