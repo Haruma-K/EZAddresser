@@ -1,5 +1,5 @@
 <p align="center">
-  <img width=300 src="https://user-images.githubusercontent.com/47441314/105856763-eb73e280-602c-11eb-9881-8ce4486e2257.png" alt="Logo">
+  <img width=300 src="https://user-images.githubusercontent.com/47441314/105858418-a650b000-602e-11eb-8823-10c7c8bd9f6c.png" alt="Logo">
 </p>
 
 <h1 align="center">EZAddresser</h1>
