@@ -1,4 +1,9 @@
-## EZAddresser
+<p align="center">
+  <img width=300 src="https://user-images.githubusercontent.com/47441314/105856763-eb73e280-602c-11eb-9881-8ce4486e2257.png" alt="Logo">
+</p>
+
+<h1 align="center">EZAddresser</h1>
+
 EZAddresser automates address assignment in the Addressable Asset System of Unity.
 You can load assets in very simple two steps:
 
