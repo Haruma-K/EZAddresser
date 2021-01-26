@@ -1,4 +1,9 @@
-## EZAddresser
+<p align="center">
+  <img width=300 src="https://user-images.githubusercontent.com/47441314/105858418-a650b000-602e-11eb-8823-10c7c8bd9f6c.png" alt="Logo">
+</p>
+
+<h1 align="center">EZAddresser</h1>
+
 EZAddresser automates address assignment in the Addressable Asset System of Unity.
 You can load assets in very simple two steps:
 
@@ -17,7 +22,7 @@ Open Packages/manifest.json and add the following to the dependencies block.
 ```json
 {
     "dependencies": {
-        "com.harumak.ezaddresser": "https://github.com/Haruma-K/EZAddresser?path=/Packages/com.harumak.ezaddresser#1.0.0"
+        "com.harumak.ezaddresser": "https://github.com/Haruma-K/EZAddresser.git?path=/Packages/com.harumak.ezaddresser"
     }
 }
 ```
