@@ -115,7 +115,7 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Services
             return group.Entries.Select(x => new AddressableAssetEntryInfo(x.Guid, x.Address)).ToArray();
         }
 
-        public void UpdateEntry(string assetGuid, string address = null)
+        public void UpdateEntry(string assetGuid, string address = null, string[] labels = null)
         {
             foreach (var group in _groups.Values)
             {
@@ -128,6 +128,11 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Services
                 if (address != null)
                 {
                     entry.Address = address;
+                }
+
+                if (labels != null)
+                {
+                    entry.Labels = labels;
                 }
                 return;
             }
@@ -200,6 +205,7 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Services
 
             public string Guid { get; }
             public string Address { get; set; }
+            public string[] Labels { get; set; }
         }
     }
 }

@@ -72,7 +72,7 @@ namespace EZAddresser.Editor.Core.Domain.Services
             Assert.IsFalse(string.IsNullOrEmpty(info.GroupTemplateGuid));
 
             CreateGroupIfNeeded(info.GroupName, info.GroupTemplateGuid);
-            CreateOrMoveEntry(info.AssetPath, info.GroupName, info.Address, true);
+            CreateOrMoveEntry(info.AssetPath, info.GroupName, info.Address, true, info.Labels ?? new string[0]);
             return true;
         }
 
@@ -117,7 +117,7 @@ namespace EZAddresser.Editor.Core.Domain.Services
         }
 
         private void CreateOrMoveEntry(string assetPath, string groupName, string address,
-            bool removeBeforeGroupIfEmpty)
+            bool removeBeforeGroupIfEmpty, string[] labels)
         {
             Assert.IsFalse(string.IsNullOrEmpty(assetPath));
             Assert.IsFalse(string.IsNullOrEmpty(groupName));
@@ -143,7 +143,7 @@ namespace EZAddresser.Editor.Core.Domain.Services
             var afterGroup = _addressablesEditorAdapter.GetGroupInfoByName(groupName);
 
             _addressablesEditorAdapter.CreateOrMoveEntry(assetGuid, afterGroup.Guid);
-            _addressablesEditorAdapter.UpdateEntry(assetGuid, address);
+            _addressablesEditorAdapter.UpdateEntry(assetGuid, address, labels);
 
             if (!string.IsNullOrEmpty(beforeGroupGuid))
             {

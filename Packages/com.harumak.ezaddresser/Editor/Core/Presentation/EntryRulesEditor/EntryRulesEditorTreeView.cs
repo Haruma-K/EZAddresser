@@ -56,12 +56,22 @@ namespace EZAddresser.Editor.Core.Presentation.EntryRulesEditor
                     autoResize = false,
                     allowToggleVisibility = true
                 };
-                return new[] {addressablePathRule, addressingModeColumn, groupNameRuleColumn};
+                var labelRulesColumn = new MultiColumnHeaderState.Column
+                {
+                    headerContent = new GUIContent("Label Rule(s)"),
+                    headerTextAlignment = TextAlignment.Center,
+                    canSort = true,
+                    width = 150,
+                    minWidth = 50,
+                    autoResize = false,
+                    allowToggleVisibility = true
+                };
+                return new[] {addressablePathRule, addressingModeColumn, groupNameRuleColumn, labelRulesColumn};
             }
         }
 
         public SetOnlyEntryRulesEditorTreeViewItem AddItem(EntityId entityId, string addressablePathRule,
-            AddressingMode addressingMode, string groupNameRule)
+            AddressingMode addressingMode, string groupNameRule, string labelRules)
         {
             var item = new EntryRulesEditorTreeViewItem(entityId)
             {
@@ -71,6 +81,7 @@ namespace EZAddresser.Editor.Core.Presentation.EntryRulesEditor
             item.AddressablePathRule.Value = addressablePathRule;
             item.AddressingMode.Value = addressingMode;
             item.GroupNameRule.Value = groupNameRule;
+            item.LabelRules.Value = labelRules;
             AddItemAndSetParent(item, -1);
             return new SetOnlyEntryRulesEditorTreeViewItem(item);
         }
@@ -103,6 +114,13 @@ namespace EZAddresser.Editor.Core.Presentation.EntryRulesEditor
                     using (new GUIColorOverride(item.IsGroupNameValid ? GUI.color : Color.red))
                     {
                         item.GroupNameRule.Value = EditorGUI.TextField(cellRect, item.GroupNameRule.Value);
+                    }
+
+                    break;
+                case Columns.LabelRules:
+                    using (new GUIColorOverride(item.IsLabelRulesValid ? GUI.color : Color.red))
+                    {
+                        item.LabelRules.Value = EditorGUI.TextField(cellRect, item.LabelRules.Value);
                     }
 
                     break;
@@ -139,6 +157,8 @@ namespace EZAddresser.Editor.Core.Presentation.EntryRulesEditor
                     return item.AddressingMode.Value.ToString();
                 case Columns.GroupNameRule:
                     return item.GroupNameRule.Value;
+                case Columns.LabelRules:
+                    return item.LabelRules.Value;
                 default:
                     throw new NotImplementedException();
             }
@@ -148,7 +168,8 @@ namespace EZAddresser.Editor.Core.Presentation.EntryRulesEditor
         {
             AddressablePathRule,
             AddressingMode,
-            GroupNameRule
+            GroupNameRule,
+            LabelRules
         }
     }
 }

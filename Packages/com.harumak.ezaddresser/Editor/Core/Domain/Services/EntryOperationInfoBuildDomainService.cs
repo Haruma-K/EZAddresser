@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Text.RegularExpressions;
 using EZAddresser.Editor.Core.Domain.Adapters;
 using EZAddresser.Editor.Core.Domain.Models.EntryOperationInfos;
@@ -80,7 +81,7 @@ namespace EZAddresser.Editor.Core.Domain.Services
                 _addressGenerateDomainService.GenerateFromAddressablePath(addressablePath, defaultAddressingMode);
             var groupName = _groupNameGenerateService.GenerateFromAssetPath(assetPath, defaultPackingMode);
             var groupTemplateGuid = defaultGroupTemplateGuid;
-            return new EntryCreateOrMoveOperationInfo(assetPath, address, groupName, groupTemplateGuid);
+            return new EntryCreateOrMoveOperationInfo(assetPath, address, groupName, groupTemplateGuid, null);
         }
 
         /// <summary>
@@ -147,12 +148,28 @@ namespace EZAddresser.Editor.Core.Domain.Services
             var address = _addressGenerateDomainService.GenerateFromAddressablePath(addressablePath,
                 rule.AddressingMode.Value);
             var groupName = regex.Replace(addressablePath, rule.GroupNameRule.Value);
-            
+
             // Replace '/' to '-'
             groupName = groupName.Replace("/", "-");
 
+            var labels = new List<string>();
+            if (rule.LabelRules.Value != null && rule.LabelRules.Value.Length >= 1)
+            {
+                var labelRules = rule.LabelRules.Value.Split(',');
+                foreach (var labelRule in labelRules)
+                {
+                    if (string.IsNullOrEmpty(labelRule))
+                    {
+                        continue;
+                    }
+
+                    var label = regex.Replace(addressablePath, labelRule);
+                    labels.Add(label);
+                }
+            }
+
             var createOrMoveOperationInfo =
-                new EntryCreateOrMoveOperationInfo(assetPath, address, groupName, groupTemplateGuid);
+                new EntryCreateOrMoveOperationInfo(assetPath, address, groupName, groupTemplateGuid, labels.ToArray());
             return createOrMoveOperationInfo;
         }
 

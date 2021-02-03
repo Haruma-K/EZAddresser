@@ -138,7 +138,7 @@ namespace EZAddresser.Editor.Core.Infrastructure.Adapters
             return new AddressableAssetEntryInfo(entry.guid, entry.address);
         }
 
-        public void UpdateEntry(string assetGuid, string address = null)
+        public void UpdateEntry(string assetGuid, string address = null, string[] labels = null)
         {
             var entry = _settings.FindAssetEntry(assetGuid);
             if (entry == null)
@@ -150,6 +150,15 @@ namespace EZAddresser.Editor.Core.Infrastructure.Adapters
             if (address != null)
             {
                 entry.SetAddress(address);
+            }
+            
+            if (labels != null)
+            {
+                entry.labels.Clear();
+                foreach (var label in labels)
+                {
+                    entry.SetLabel(label, true, true);
+                }
             }
         }
 

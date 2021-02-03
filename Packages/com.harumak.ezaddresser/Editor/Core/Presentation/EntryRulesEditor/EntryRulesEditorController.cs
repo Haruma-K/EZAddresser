@@ -191,6 +191,16 @@ namespace EZAddresser.Editor.Core.Presentation.EntryRulesEditor
                     () => _entryRulesService.UpdateRule(item.ControlId,
                         new EntryRuleUpdateCommand(groupNameRule: oldValue)));
             }).DisposeWith(disposables);
+            item.LabelRules.Skip(1).Subscribe(x =>
+            {
+                var newValue = item.LabelRules.Value;
+                var oldValue = GetRule().LabelRules.Value;
+                _history.Register($"{nameof(OnTreeViewItemAdded)}_{nameof(item.LabelRules)}",
+                    () => _entryRulesService.UpdateRule(item.ControlId,
+                        new EntryRuleUpdateCommand(labelRules: newValue)),
+                    () => _entryRulesService.UpdateRule(item.ControlId,
+                        new EntryRuleUpdateCommand(labelRules: oldValue)));
+            }).DisposeWith(disposables);
             _itemDisposables.Add(item.ControlId, disposables);
         }
 

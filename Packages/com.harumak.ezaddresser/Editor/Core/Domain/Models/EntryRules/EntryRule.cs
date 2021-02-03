@@ -33,6 +33,16 @@ namespace EZAddresser.Editor.Core.Domain.Models.EntryRules
             _groupNameRule.Value = groupNameRule;
         }
 
+        public void SetLabelRules(string labelRules)
+        {
+            if (labelRules == null)
+            {
+                throw new ArgumentNullException(nameof(labelRules));
+            }
+
+            _labelRules.Value = labelRules;
+        }
+
         public bool Validate(out string error)
         {
             if (!ValidateAddressablePathRule(out error))
@@ -41,6 +51,11 @@ namespace EZAddresser.Editor.Core.Domain.Models.EntryRules
             }
 
             if (!ValidateGroupNameRule(out error))
+            {
+                return false;
+            }
+
+            if (!ValidateLabelRules(out error))
             {
                 return false;
             }
@@ -77,7 +92,7 @@ namespace EZAddresser.Editor.Core.Domain.Models.EntryRules
                 error = $"{nameof(GroupNameRule)} is null or empty.";
                 return false;
             }
-            
+
             if (_groupNameRule.Value.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
             {
                 error = $"{nameof(GroupNameRule)} contains characters that cannot be used as file names.";
@@ -85,6 +100,39 @@ namespace EZAddresser.Editor.Core.Domain.Models.EntryRules
             }
 
             error = null;
+            return true;
+        }
+
+        public bool ValidateLabelRules(out string error)
+        {
+            if (string.IsNullOrEmpty(_labelRules.Value))
+            {
+                error = null;
+                return true;
+            }
+            var labelRules = _labelRules.Value.Split(',');
+            for (var i = 0; i < labelRules.Length; i++)
+            {
+                var labelRule = labelRules[i];
+                if (string.IsNullOrEmpty(labelRule))
+                {
+                    error = $"{nameof(LabelRules)}[{i}] is null or empty.";
+                    return false;
+                }
+
+                if (labelRule.Contains(" "))
+                {
+                    error = $"{nameof(LabelRules)}[{i}] contains space.";
+                    return false;
+                }
+            }
+
+            error = null;
+            return true;
+        }
+
+        public bool ValidateLabelRules()
+        {
             return true;
         }
     }

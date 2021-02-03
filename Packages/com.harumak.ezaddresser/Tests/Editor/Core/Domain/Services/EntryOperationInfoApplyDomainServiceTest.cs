@@ -1,12 +1,8 @@
 ﻿using System.Linq;
 using EZAddresser.Editor.Core.Domain.Models.EntryOperationInfos;
 using EZAddresser.Editor.Core.Domain.Services;
-using EZAddresser.Tests.Editor.Core.Infrastructure;
 using NUnit.Framework;
-using UnityEditor;
-using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
-using UnityEditor.AddressableAssets.Settings.GroupSchemas;
 using UnityEngine;
 
 namespace EZAddresser.Tests.Editor.Core.Domain.Services
@@ -20,18 +16,20 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Services
             var addressablesEditorService = new FakeAddressablesEditorAdapter();
             var assetDatabaseService = new FakeAssetDatabaseAdapter();
             var service = new EntryOperationInfoApplyDomainService(addressablesEditorService, assetDatabaseService);
-            
+
             // Set up test assets.
             const string address = "dummyAddress";
             const string createdAssetPath = "Assets/Prefabs/prefab_test.prefab";
             const string groupName = "TestPrefabs";
+            var labels = new[] {"DummyLabel1", "DummyLabel2"};
             var groupTemplate = ScriptableObject.CreateInstance<AddressableAssetGroupTemplate>();
-            var groupTemplateGuid = assetDatabaseService.CreateTestAsset("Assets/TestGroupTemplate.asset", groupTemplate);
+            var groupTemplateGuid =
+                assetDatabaseService.CreateTestAsset("Assets/TestGroupTemplate.asset", groupTemplate);
             var assetGuid = assetDatabaseService.CreateTestAsset(createdAssetPath, new GameObject());
-            
+
             // Test.
-            var createOrMoveOperationInfo = new EntryCreateOrMoveOperationInfo(createdAssetPath, address, 
-                groupName, groupTemplateGuid);
+            var createOrMoveOperationInfo = new EntryCreateOrMoveOperationInfo(createdAssetPath, address,
+                groupName, groupTemplateGuid, labels);
             var operationInfo = new EntryOperationInfo(createOrMoveOperationInfo, null);
             service.Apply(operationInfo);
             var group = addressablesEditorService.Groups.Values.First();
@@ -39,8 +37,11 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Services
             Assert.That(group.Name, Is.EqualTo(groupName));
             Assert.That(entry.Guid, Is.EqualTo(assetGuid));
             Assert.That(entry.Address, Is.EqualTo(address));
+            Assert.That(entry.Labels.Length, Is.EqualTo(2));
+            Assert.That(entry.Labels, Contains.Item(labels[0]));
+            Assert.That(entry.Labels, Contains.Item(labels[1]));
         }
-        
+
         [Test]
         public void Apply_Move_CanMove()
         {
@@ -48,7 +49,7 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Services
             var addressablesEditorService = new FakeAddressablesEditorAdapter();
             var assetDatabaseService = new FakeAssetDatabaseAdapter();
             var service = new EntryOperationInfoApplyDomainService(addressablesEditorService, assetDatabaseService);
-            
+
             // Set up test assets.
             const string beforeGroupName = "BeforeGroup";
             const string afterGroupName = "AfterGroup";
@@ -57,15 +58,16 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Services
             const string address = "dummyAddress";
             const string createdAssetPath = "Assets/Prefabs/prefab_test.prefab";
             var groupTemplate = ScriptableObject.CreateInstance<AddressableAssetGroupTemplate>();
-            var groupTemplateGuid = assetDatabaseService.CreateTestAsset("Assets/TestGroupTemplate.asset", groupTemplate);
+            var groupTemplateGuid =
+                assetDatabaseService.CreateTestAsset("Assets/TestGroupTemplate.asset", groupTemplate);
             var assetGuid = assetDatabaseService.CreateTestAsset(createdAssetPath, new GameObject());
             addressablesEditorService.CreateOrMoveEntry(assetGuid, beforeGroupInfo.Guid);
             var beforeGroup = addressablesEditorService.Groups.Values.First(x => x.Name.Equals(beforeGroupName));
             Assert.That(beforeGroup.Entries.Count, Is.EqualTo(1));
-            
+
             // Test.
-            var createOrMoveOperationInfo = new EntryCreateOrMoveOperationInfo(createdAssetPath, address, 
-                afterGroupName, groupTemplateGuid);
+            var createOrMoveOperationInfo = new EntryCreateOrMoveOperationInfo(createdAssetPath, address,
+                afterGroupName, groupTemplateGuid, null);
             var operationInfo = new EntryOperationInfo(createOrMoveOperationInfo, null);
             service.Apply(operationInfo);
             var afterGroup = addressablesEditorService.Groups.Values.First(x => x.Name.Equals(afterGroupName));
@@ -75,7 +77,7 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Services
             Assert.That(entry.Guid, Is.EqualTo(assetGuid));
             Assert.That(entry.Address, Is.EqualTo(address));
         }
-        
+
         [Test]
         public void Apply_Remove_CanRemove()
         {
@@ -83,7 +85,7 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Services
             var addressablesEditorService = new FakeAddressablesEditorAdapter();
             var assetDatabaseService = new FakeAssetDatabaseAdapter();
             var service = new EntryOperationInfoApplyDomainService(addressablesEditorService, assetDatabaseService);
-            
+
             // Set up test assets.
             const string groupName = "BeforeGroup";
             var beforeGroupInfo = addressablesEditorService.CreateGroup(groupName, false, false, false,
@@ -95,7 +97,7 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Services
             addressablesEditorService.CreateOrMoveEntry(assetGuid, beforeGroupInfo.Guid);
             var beforeGroup = addressablesEditorService.Groups.Values.First(x => x.Name.Equals(groupName));
             Assert.That(beforeGroup.Entries.Count, Is.EqualTo(1));
-            
+
             // Test.
             var removeOperationInfo = new EntryRemoveOperationInfo(createdAssetPath);
             var operationInfo = new EntryOperationInfo(null, removeOperationInfo);

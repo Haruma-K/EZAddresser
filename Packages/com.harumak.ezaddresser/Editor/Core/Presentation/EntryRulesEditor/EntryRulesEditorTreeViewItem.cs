@@ -11,6 +11,7 @@ namespace EZAddresser.Editor.Core.Presentation.EntryRulesEditor
         public readonly InteractiveProperty<string> AddressablePathRule = new InteractiveProperty<string>();
         public readonly InteractiveProperty<AddressingMode> AddressingMode = new InteractiveProperty<AddressingMode>();
         public readonly InteractiveProperty<string> GroupNameRule = new InteractiveProperty<string>();
+        public readonly InteractiveProperty<string> LabelRules = new InteractiveProperty<string>();
 
         public EntryRulesEditorTreeViewItem(EntityId controlId)
         {
@@ -20,6 +21,7 @@ namespace EZAddresser.Editor.Core.Presentation.EntryRulesEditor
         public EntityId ControlId { get; }
         public bool IsAddressablePathRuleValid { get; set; }
         public bool IsGroupNameValid { get; set; }
+        public bool IsLabelRulesValid { get; set; }
     }
 
     public class SetOnlyEntryRulesEditorTreeViewItem
@@ -45,8 +47,15 @@ namespace EZAddresser.Editor.Core.Presentation.EntryRulesEditor
             set => _source.IsGroupNameValid = value;
         }
 
+        public bool IsLabelRulesValid
+        {
+            get => _source.IsLabelRulesValid;
+            set => _source.IsLabelRulesValid = value;
+        }
+
         public ISetOnlyInteractiveProperty<string> AddressablePathRule => _source.AddressablePathRule;
         public ISetOnlyInteractiveProperty<AddressingMode> AddressingMode => _source.AddressingMode;
         public ISetOnlyInteractiveProperty<string> GroupNameRule => _source.GroupNameRule;
+        public ISetOnlyInteractiveProperty<string> LabelRules => _source.LabelRules;
     }
 }

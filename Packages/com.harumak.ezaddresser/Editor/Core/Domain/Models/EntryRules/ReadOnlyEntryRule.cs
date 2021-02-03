@@ -16,5 +16,10 @@
         {
             return _source.ValidateGroupNameRule(out error);
         }
+
+        public bool ValidateLabelRules(out string error)
+        {
+            return _source.ValidateLabelRules(out error);
+        }
     }
 }

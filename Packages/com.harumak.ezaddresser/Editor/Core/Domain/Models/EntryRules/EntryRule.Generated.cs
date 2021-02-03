@@ -17,6 +17,7 @@ namespace EZAddresser.Editor.Core.Domain.Models.EntryRules
         [SerializeField] private ObservableProperty<string> _addressablePathRule = new ObservableProperty<string>();
         [SerializeField] private ObservableProperty<AddressingMode> _addressingMode = new ObservableProperty<AddressingMode>();
         [SerializeField] private ObservableProperty<string> _groupNameRule = new ObservableProperty<string>();
+        [SerializeField] private ObservableProperty<string> _labelRules = new ObservableProperty<string>();
 
         /// <summary> Regular expression representing a path relative to the Addressables folder to specify the target asset. </summary>
         public IReadOnlyObservableProperty<string> AddressablePathRule => _addressablePathRule;
@@ -26,5 +27,8 @@ namespace EZAddresser.Editor.Core.Domain.Models.EntryRules
 
         /// <summary> The group name, which is the result of Replace() the regular expression of AddressablePathRule with this value. </summary>
         public IReadOnlyObservableProperty<string> GroupNameRule => _groupNameRule;
+
+        /// <summary> The label name, which is the result of Replace() the regular expression of AddressablePathRule with this value. Can be specified multiple values separated by ','.</summary>
+        public IReadOnlyObservableProperty<string> LabelRules => _labelRules;
     }
 }

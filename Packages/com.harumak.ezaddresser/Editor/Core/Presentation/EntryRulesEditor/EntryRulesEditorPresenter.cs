@@ -95,7 +95,7 @@ namespace EZAddresser.Editor.Core.Presentation.EntryRulesEditor
         private void AddTreeViewItem(ReadOnlyEntryRule rule)
         {
             var viewItem = _treeView.AddItem(rule.Id, rule.AddressablePathRule.Value, rule.AddressingMode.Value,
-                rule.GroupNameRule.Value);
+                rule.GroupNameRule.Value, rule.LabelRules.Value);
             _treeView.Reload();
 
             var itemDisposables = new CompositeDisposable();
@@ -111,6 +111,12 @@ namespace EZAddresser.Editor.Core.Presentation.EntryRulesEditor
                 {
                     viewItem.GroupNameRule.SetValueAndNotNotify(x);
                     viewItem.IsGroupNameValid = rule.ValidateGroupNameRule(out _);
+                })
+                .DisposeWith(itemDisposables);
+            rule.LabelRules.Subscribe(x =>
+                {
+                    viewItem.LabelRules.SetValueAndNotNotify(x);
+                    viewItem.IsLabelRulesValid = rule.ValidateLabelRules(out _);
                 })
                 .DisposeWith(itemDisposables);
             _perItemDisposables.Add(rule.Id, itemDisposables);

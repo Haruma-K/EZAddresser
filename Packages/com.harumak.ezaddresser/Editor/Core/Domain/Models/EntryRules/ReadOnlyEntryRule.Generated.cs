@@ -27,5 +27,8 @@ namespace EZAddresser.Editor.Core.Domain.Models.EntryRules
 
         /// <summary> The group name, which is the result of Replace() the regular expression of AddressablePathRule with this value. </summary>
         public IReadOnlyObservableProperty<string> GroupNameRule => _source.GroupNameRule;
+        
+        /// <summary> The label name, which is the result of Replace() the regular expression of AddressablePathRule with this value. Can be specified multiple values separated by ','.</summary>
+        public IReadOnlyObservableProperty<string> LabelRules => _source.LabelRules;
     }
 }
