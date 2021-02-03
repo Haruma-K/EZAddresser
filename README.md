@@ -67,7 +67,7 @@ Note that when you change the Group Template, all groups will be deleted once an
 You can edit the per asset settings from Window > EZAddresser > Entry Rule Editor.
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/47441314/105819744-ecd8e700-5ffb-11eb-988b-f4022eb5999d.PNG" alt="Per Asset Settings">
+  <img src="https://user-images.githubusercontent.com/47441314/106751584-bab72d00-666c-11eb-9d26-55d85a66419a.png" alt="Per Asset Settings">
 </p>
 
 You can create a new rule from the Create button on the toolbar.  
@@ -77,7 +77,8 @@ The description of each setting item is as follows.
 |-|-|
 |Addressable Path Rule|Regular expression representing the relative path of the target asset from the Addressables folder.|
 |Addressing Mode|Addressing Mode to be applied to the target asset.|
-|Group Name Rule|Group name to which the target asset belongs.<br>Use Regex.Replace() and replace Addressable Path Rule with this to get the actual group name.<br>However, '/' is replaced by '-' because it is not an appropriate group name.|
+|Group Name Rule|Group name to which the target asset belongs.<br>The actual group name is retrieved with `Regex.Replace([Addressable Path], [Addressable Path Rule], [Group Name Rule])`.<br>However, '/' is replaced by '-' because it is not an appropriate group name.|
+|Label Rule(s)|Label name to which the target asset belongs.<br>The actual label is retrieved with `Regex.Replace([Addressable Path], [Addressable Path Rule], [Label Name Rule])`.<br>Multiple labels can be defined by separating them with commas.<br>Spaces are not allowed in label names.|
 
 For example, if you set the Addressable Path Rule as prepub_sample_(?<prefab_id>[0-9]{3})\.prefab, then
 Both prefab_sample_001.prefab and prefab_sample_002.prefab will be subject to this rule.
