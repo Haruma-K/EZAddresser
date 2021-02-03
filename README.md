@@ -78,7 +78,7 @@ The description of each setting item is as follows.
 |Addressable Path Rule|Regular expression representing the relative path of the target asset from the Addressables folder.|
 |Addressing Mode|Addressing Mode to be applied to the target asset.|
 |Group Name Rule|Group name to which the target asset belongs.<br>The actual group name is retrieved with `Regex.Replace([Addressable Path], [Addressable Path Rule], [Group Name Rule])`.<br>However, '/' is replaced by '-' because it is not an appropriate group name.|
-|Label Rule(s)|Label name to which the target asset belongs.<br>The actual label is retrieved with `Regex.Replace([Addressable Path], [Addressable Path Rule], [Label Name Rule])`.<br>Multiple labels can be defined by separating them with commas.<br>Spaces are not allowed in label names.|
+|Label Rule(s)|The name of the label to attach to the target asset.<br>The actual label is retrieved with `Regex.Replace([Addressable Path], [Addressable Path Rule], [Label Rule])`.<br>Multiple labels can be defined by separating them with commas.<br>Spaces are not allowed in label names.|
 
 For example, if you set the Addressable Path Rule as prepub_sample_(?<prefab_id>[0-9]{3})\.prefab, then
 Both prefab_sample_001.prefab and prefab_sample_002.prefab will be subject to this rule.
