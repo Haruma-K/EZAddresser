@@ -91,7 +91,8 @@ namespace EZAddresser.Editor.Core.Domain.Adapters
         /// </summary>
         /// <param name="assetGuid"></param>
         /// <param name="address"></param>
-        void UpdateEntry(string assetGuid, string address = null);
+        /// <param name="labels"></param>
+        void UpdateEntry(string assetGuid, string address = null, string[] labels = null);
 
         /// <summary>
         ///     Remove an asset entry.

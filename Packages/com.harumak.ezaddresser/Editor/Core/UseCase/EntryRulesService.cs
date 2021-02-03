@@ -54,6 +54,7 @@ namespace EZAddresser.Editor.Core.UseCase
         {
             Assert.IsTrue(_entryRulesStore.State.Contains(entryRuleId));
             _entryRulesStore.State.Remove(entryRuleId);
+            _entryRulesStore.MarkAsDirty();
         }
 
         public void Save()
@@ -82,6 +83,11 @@ namespace EZAddresser.Editor.Core.UseCase
             if (command.GroupNameRule != null)
             {
                 entryRule.SetGroupNameRule(command.GroupNameRule);
+            }
+
+            if (command.LabelRules != null)
+            {
+                entryRule.SetLabelRules(command.LabelRules);
             }
         }
     }

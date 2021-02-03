@@ -313,6 +313,95 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Services
         }
 
         [Test]
+        public void BuildEntryCreateOrMoveInfoByRule_SetNoLabels_ReflectedCorrectly()
+        {
+            // Set up.
+            var dummyFolderPath = $"Assets/{Paths.GetAddressablesFolderName()}";
+            var dummyAssetPath = $"{dummyFolderPath}/Prefabs/prefab_dummy_0001.prefab";
+            var rule = new EntryRule();
+            rule.SetAddressablePathRule(@"Prefabs/prefab_dummy_(?<id>[0-9]{4})\.prefab");
+            rule.SetAddressingMode(AddressingMode.AddressablePath);
+            rule.SetGroupNameRule("Group_${id}");
+            var assetDatabaseAdapter = new FakeAssetDatabaseAdapter();
+            var addressableFolderGuid = assetDatabaseAdapter.CreateTestAsset(dummyFolderPath, new Object());
+            var service = CreateBuildService(assetDatabaseAdapter);
+
+            // Test.
+            var entryOperationInfo = service.BuildEntryCreateOrMoveInfoByRule(dummyAssetPath, rule,
+                addressableFolderGuid);
+            Assert.That(entryOperationInfo.AssetPath, Is.EqualTo(dummyAssetPath));
+            Assert.That(entryOperationInfo.Labels, Is.Empty);
+        }
+
+        [Test]
+        public void BuildEntryCreateOrMoveInfoByRule_SetLabel_ReflectedCorrectly()
+        {
+            // Set up.
+            var dummyFolderPath = $"Assets/{Paths.GetAddressablesFolderName()}";
+            var dummyAssetPath = $"{dummyFolderPath}/Prefabs/prefab_dummy_0001.prefab";
+            var rule = new EntryRule();
+            rule.SetAddressablePathRule(@"Prefabs/prefab_dummy_(?<id>[0-9]{4})\.prefab");
+            rule.SetAddressingMode(AddressingMode.AddressablePath);
+            rule.SetGroupNameRule("Group_${id}");
+            rule.SetLabelRules("DummyLabel1");
+            var assetDatabaseAdapter = new FakeAssetDatabaseAdapter();
+            var addressableFolderGuid = assetDatabaseAdapter.CreateTestAsset(dummyFolderPath, new Object());
+            var service = CreateBuildService(assetDatabaseAdapter);
+
+            // Test.
+            var entryOperationInfo = service.BuildEntryCreateOrMoveInfoByRule(dummyAssetPath, rule,
+                addressableFolderGuid);
+            Assert.That(entryOperationInfo.AssetPath, Is.EqualTo(dummyAssetPath));
+            Assert.That(entryOperationInfo.Labels.Length, Is.EqualTo(1));
+            Assert.That(entryOperationInfo.Labels, Contains.Item("DummyLabel1"));
+        }
+
+        [Test]
+        public void BuildEntryCreateOrMoveInfoByRule_SetTwoLabels_ReflectedCorrectly()
+        {
+            // Set up.
+            var dummyFolderPath = $"Assets/{Paths.GetAddressablesFolderName()}";
+            var dummyAssetPath = $"{dummyFolderPath}/Prefabs/prefab_dummy_0001.prefab";
+            var rule = new EntryRule();
+            rule.SetAddressablePathRule(@"Prefabs/prefab_dummy_(?<id>[0-9]{4})\.prefab");
+            rule.SetAddressingMode(AddressingMode.AddressablePath);
+            rule.SetGroupNameRule("Group_${id}");
+            rule.SetLabelRules("DummyLabel1,DummyLabel2");
+            var assetDatabaseAdapter = new FakeAssetDatabaseAdapter();
+            var addressableFolderGuid = assetDatabaseAdapter.CreateTestAsset(dummyFolderPath, new Object());
+            var service = CreateBuildService(assetDatabaseAdapter);
+
+            // Test.
+            var entryOperationInfo = service.BuildEntryCreateOrMoveInfoByRule(dummyAssetPath, rule,
+                addressableFolderGuid);
+            Assert.That(entryOperationInfo.AssetPath, Is.EqualTo(dummyAssetPath));
+            Assert.That(entryOperationInfo.Labels.Length, Is.EqualTo(2));
+            Assert.That(entryOperationInfo.Labels, Contains.Item("DummyLabel1"));
+            Assert.That(entryOperationInfo.Labels, Contains.Item("DummyLabel2"));
+        }
+
+        [Test]
+        public void BuildEntryCreateOrMoveInfoByRule_InvalidLabelRuls_ReturnNull()
+        {
+            // Set up.
+            var dummyFolderPath = $"Assets/{Paths.GetAddressablesFolderName()}";
+            var dummyAssetPath = $"{dummyFolderPath}/Prefabs/prefab_dummy_0001.prefab";
+            var rule = new EntryRule();
+            rule.SetAddressablePathRule(@"Prefabs/prefab_dummy_(?<id>[0-9]{4})\.prefab");
+            rule.SetAddressingMode(AddressingMode.AddressablePath);
+            rule.SetGroupNameRule("Group_${id}");
+            rule.SetLabelRules("DummyLabel1,");
+            var assetDatabaseAdapter = new FakeAssetDatabaseAdapter();
+            var addressableFolderGuid = assetDatabaseAdapter.CreateTestAsset(dummyFolderPath, new Object());
+            var service = CreateBuildService(assetDatabaseAdapter);
+
+            // Test.
+            var entryOperationInfo = service.BuildEntryCreateOrMoveInfoByRule(dummyAssetPath, rule,
+                addressableFolderGuid);
+            Assert.That(entryOperationInfo, Is.Null);
+        }
+
+        [Test]
         public void BuildEntryCreateOrMoveInfoByRule_SetGroupTemplateGuid_ReflectedCorrectly()
         {
             // Set up.

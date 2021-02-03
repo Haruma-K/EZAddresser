@@ -1,4 +1,5 @@
-﻿using EZAddresser.Editor.Core.Domain.Models.EntryRules;
+﻿using System.Linq;
+using EZAddresser.Editor.Core.Domain.Models.EntryRules;
 using EZAddresser.Editor.Core.Domain.Models.Shared;
 using NUnit.Framework;
 using UnityEngine;
@@ -57,6 +58,15 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Models
         }
         
         [Test]
+        public void SetLabelRules_CanSet()
+        {
+            const string dummyLabelRules = "DummyLabel1,DummyLabel2";
+            var rule = new EntryRule();
+            rule.SetLabelRules(dummyLabelRules);
+            Assert.That(rule.LabelRules.Value, Is.EqualTo(dummyLabelRules));
+        }
+
+        [Test]
         public void ValidateAssetRelativePathRule_ValidAssetPathRule_ReturnTrue()
         {
             // Set up.
@@ -65,7 +75,7 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Models
             rule.SetAddressablePathRule(dummyAssetPathRule);
             
             // Test.
-            var result = rule.ValidateAddressablePathRule(out var _);
+            var result = rule.ValidateAddressablePathRule(out _);
             Assert.That(result, Is.True);
         }
         
@@ -77,7 +87,7 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Models
             rule.SetAddressablePathRule(string.Empty);
             
             // Test.
-            var result = rule.ValidateAddressablePathRule(out var _);
+            var result = rule.ValidateAddressablePathRule(out _);
             Assert.That(result, Is.False);
         }
         
@@ -90,7 +100,7 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Models
             rule.SetAddressablePathRule(dummyAssetPathRule);
             
             // Test.
-            var result = rule.ValidateAddressablePathRule(out var _);
+            var result = rule.ValidateAddressablePathRule(out _);
             Assert.That(result, Is.False);
         }
         
@@ -103,7 +113,7 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Models
             rule.SetGroupNameRule(dummyGroupNameRule);
             
             // Test.
-            var result = rule.ValidateGroupNameRule(out var _);
+            var result = rule.ValidateGroupNameRule(out _);
             Assert.That(result, Is.True);
         }
         
@@ -115,7 +125,67 @@ namespace EZAddresser.Tests.Editor.Core.Domain.Models
             rule.SetGroupNameRule("");
             
             // Test.
-            var result = rule.ValidateGroupNameRule(out var _);
+            var result = rule.ValidateGroupNameRule(out _);
+            Assert.That(result, Is.False);
+        }
+        
+        [Test]
+        public void ValidateLabelRules_Empty_ReturnTrue()
+        {
+            // Set up.
+            var rule = new EntryRule();
+            rule.SetLabelRules("");
+            
+            // Test.
+            var result = rule.ValidateLabelRules(out _);
+            Assert.That(result, Is.True);
+        }
+        
+        [Test]
+        public void ValidateLabelRules_OneLabel_ReturnTrue()
+        {
+            // Set up.
+            var rule = new EntryRule();
+            rule.SetLabelRules("DummyLabel");
+            
+            // Test.
+            var result = rule.ValidateLabelRules(out _);
+            Assert.That(result, Is.True);
+        }
+        
+        [Test]
+        public void ValidateLabelRules_TwoLabels_ReturnTrue()
+        {
+            // Set up.
+            var rule = new EntryRule();
+            rule.SetLabelRules("DummyLabel1,DummyLabel2");
+            
+            // Test.
+            var result = rule.ValidateLabelRules(out _);
+            Assert.That(result, Is.True);
+        }
+        
+        [Test]
+        public void ValidateLabelRules_ContainsSpace_ReturnFalse()
+        {
+            // Set up.
+            var rule = new EntryRule();
+            rule.SetLabelRules("DummyLabel1, DummyLabel2");
+            
+            // Test.
+            var result = rule.ValidateLabelRules(out _);
+            Assert.That(result, Is.False);
+        }
+        
+        [Test]
+        public void ValidateLabelRules_ContainsEmpty_ReturnFalse()
+        {
+            // Set up.
+            var rule = new EntryRule();
+            rule.SetLabelRules("DummyLabel1,");
+            
+            // Test.
+            var result = rule.ValidateLabelRules(out _);
             Assert.That(result, Is.False);
         }
     }

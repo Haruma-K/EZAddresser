@@ -15,13 +15,16 @@ namespace EZAddresser.Editor.Core.Domain.Models.EntryOperationInfos
         [SerializeField] private string _address;
         [SerializeField] private string _groupName;
         [SerializeField] private string _groupTemplateGuid;
+        [SerializeField] private string[] _labels;
 
-        public EntryCreateOrMoveOperationInfo(string assetPath, string address, string groupName, string groupTemplateGuid)
+        public EntryCreateOrMoveOperationInfo(string assetPath, string address, string groupName,
+            string groupTemplateGuid, string[] labels)
         {
             _assetPath = assetPath;
             _address = address;
             _groupName = groupName;
             _groupTemplateGuid = groupTemplateGuid;
+            _labels = labels;
         }
 
         public string AssetPath => _assetPath;
@@ -32,12 +35,15 @@ namespace EZAddresser.Editor.Core.Domain.Models.EntryOperationInfos
 
         public string GroupTemplateGuid => _groupTemplateGuid;
 
+        public string[] Labels => _labels;
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return AssetPath;
             yield return Address;
             yield return GroupName;
             yield return GroupTemplateGuid;
+            yield return Labels;
         }
     }
 }
