@@ -4,7 +4,7 @@
 
 <h1 align="center">EZAddresser</h1>
 
-EZAddresser automates address assignment in the Addressable Asset System of Unity.
+EZAddresser is automatic addressing system for Unity Addressable Asset System.
 You can load assets in very simple two steps:
 
 1. Put the asset you want to load into the "Addressables" folder.

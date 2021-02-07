@@ -8,9 +8,9 @@
     "com.unity.addressables": "1.8.5"
   },
   "author": {
-    "name": "Haruki Yano a.k.a Haruma:K",
+    "name": "Haruki Yano",
     "url": "https://github.com/Haruma-K"
   },
   "type": "tool",
-  "description": "EZAddresser automates the process of assigning addresses in the Addressable asset system."
+  "description": "Automatic addressing system for Unity Addressable Asset System."
 }
