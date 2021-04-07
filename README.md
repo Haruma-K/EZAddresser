@@ -1,7 +1,3 @@
-<p align="center">
-  <img width=300 src="https://user-images.githubusercontent.com/47441314/105858418-a650b000-602e-11eb-8823-10c7c8bd9f6c.png" alt="Logo">
-</p>
-
 <h1 align="center">EZAddresser</h1>
 
 EZAddresser is automatic addressing system for Unity Addressable Asset System.
@@ -17,6 +13,18 @@ You can load assets in very simple two steps:
 EZAddresser requires Unity 2020.1 or higher (because of the generic type serialization).
 
 ## Install
+1. Open the Package Manager
+2. "+" button > Add package from git URL
+3. Enter the following
+    * https://github.com/Haruma-K/EZAddresser.git?path=/Packages/com.harumak.ezaddresser
+
+<p align="center">
+  <img width=500 src="https://user-images.githubusercontent.com/47441314/113792801-c1077980-9781-11eb-8770-210999a25c9a.png" alt="Package Manager">
+</p>
+
+
+or
+
 Open Packages/manifest.json and add the following to the dependencies block.
 
 ```json
@@ -26,6 +34,9 @@ Open Packages/manifest.json and add the following to the dependencies block.
     }
 }
 ```
+
+If you want to set the target version, specify it as follow.
+* https://github.com/Haruma-K/EZAddresser.git?path=/Packages/com.harumak.ezaddresser#0.1.0
 
 ## Getting Started
 You can load the assets with EZAddresser by following steps:
