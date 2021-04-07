@@ -13,7 +13,7 @@ You can load assets in very simple two steps:
 EZAddresser requires Unity 2020.1 or higher (because of the generic type serialization).
 
 ## Install
-1. Open the Package Manager
+1. Open the Package Manager from Window > Package Manager
 2. "+" button > Add package from git URL
 3. Enter the following
     * https://github.com/Haruma-K/EZAddresser.git?path=/Packages/com.harumak.ezaddresser
@@ -23,9 +23,7 @@ EZAddresser requires Unity 2020.1 or higher (because of the generic type seriali
 </p>
 
 
-or
-
-Open Packages/manifest.json and add the following to the dependencies block.
+Or, open Packages/manifest.json and add the following to the dependencies block.
 
 ```json
 {
@@ -35,7 +33,7 @@ Open Packages/manifest.json and add the following to the dependencies block.
 }
 ```
 
-If you want to set the target version, specify it as follow.
+If you want to set the target version, specify it like follow.
 * https://github.com/Haruma-K/EZAddresser.git?path=/Packages/com.harumak.ezaddresser#0.1.0
 
 ## Getting Started
