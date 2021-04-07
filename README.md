@@ -10,7 +10,8 @@ You can load assets in very simple two steps:
   <img src="https://user-images.githubusercontent.com/47441314/105809345-de370380-5fec-11eb-84fb-e1511e653b0b.gif" alt="Sample">
 </p>
 
-EZAddresser requires Unity 2020.1 or higher (because of the generic type serialization).
+## Requirement
+Unity 2020.1 or higher (because of the generic type serialization).
 
 ## Install
 1. Open the Package Manager from Window > Package Manager
