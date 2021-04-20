@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using EZAddresser.Editor.Core.Domain.Models.Shared;
 using EZAddresser.Editor.Foundation;
 using EZAddresser.Editor.Foundation.DomainModel;
@@ -73,9 +75,10 @@ namespace EZAddresser.Editor.Core.Presentation.EntryRulesEditor
         public SetOnlyEntryRulesEditorTreeViewItem AddItem(EntityId entityId, string addressablePathRule,
             AddressingMode addressingMode, string groupNameRule, string labelRules)
         {
+            
             var item = new EntryRulesEditorTreeViewItem(entityId)
             {
-                id = entityId.GetHashCode(),
+                id = EntityIdToIntId(entityId),
                 displayName = addressablePathRule
             };
             item.AddressablePathRule.Value = addressablePathRule;
@@ -88,7 +91,7 @@ namespace EZAddresser.Editor.Core.Presentation.EntryRulesEditor
 
         public void RemoveItem(EntityId entityId, bool invokeCallback = true)
         {
-            base.RemoveItem(entityId.GetHashCode());
+            base.RemoveItem(EntityIdToIntId(entityId), invokeCallback);
         }
 
         protected override void CellGUI(int columnIndex, Rect cellRect, RowGUIArgs args)
@@ -162,6 +165,15 @@ namespace EZAddresser.Editor.Core.Presentation.EntryRulesEditor
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        private static int EntityIdToIntId(EntityId entityId)
+        {
+            var csp = new MD5CryptoServiceProvider();
+            var bytes = Encoding.UTF8.GetBytes(entityId.Value);
+            var hash = csp.ComputeHash(bytes);
+            var id = BitConverter.ToInt32(hash, 0);
+            return id;
         }
 
         private enum Columns
