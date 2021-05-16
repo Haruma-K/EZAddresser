@@ -1,6 +1,6 @@
 <h1 align="center">EZAddresser</h1>
 
-EZAddresser is automatic addressing system for Unity Addressable Asset System.
+EZAddresser is automatic addressing system for Unity Addressable Asset System.  
 You can load assets in very simple two steps:
 
 1. Put the asset you want to load into the "Addressables" folder.
@@ -10,10 +10,11 @@ You can load assets in very simple two steps:
   <img src="https://user-images.githubusercontent.com/47441314/105809345-de370380-5fec-11eb-84fb-e1511e653b0b.gif" alt="Sample">
 </p>
 
-## Requirement
-Unity 2020.1 or higher (because of the generic type serialization).
+## Setup
+#### Requirement
+Unity 2020.1 or higher (because of generic type serialization).
 
-## Install
+#### Install
 1. Open the Package Manager from Window > Package Manager
 2. "+" button > Add package from git URL
 3. Enter the following
@@ -36,6 +37,13 @@ Or, open Packages/manifest.json and add the following to the dependencies block.
 
 If you want to set the target version, specify it like follow.
 * https://github.com/Haruma-K/EZAddresser.git?path=/Packages/com.harumak.ezaddresser#0.1.0
+
+#### License
+This software is released under the MIT License.  
+You are free to use it within the scope of the license.  
+However, the following copyright and license notices are required for use.
+
+https://github.com/Haruma-K/EZAddresser/blob/master/LICENSE.md
 
 ## Getting Started
 You can load the assets with EZAddresser by following steps:
@@ -145,7 +153,3 @@ entryRulesService.RemoveRule(firstRule.Id);
 // Save changes.
 entryRulesService.Save();
 ```
-
-
-## Lisence
-This software is released under the MIT License, see LICENSE.md.
