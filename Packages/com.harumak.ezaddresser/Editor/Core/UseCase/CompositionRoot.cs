@@ -13,42 +13,21 @@ namespace EZAddresser.Editor.Core.UseCase
     {
         private static int _referenceCount;
         private static CompositionRoot _compositionRoot;
+        private static AddressableAssetSettings _addressableSettings;
 
         private CompositionRoot()
         {
-            // Create AddressableAssetSettings asset if it does not exists.
-            if (AddressableAssetSettingsDefaultObject.Settings == null)
-            {
-                AddressableAssetSettingsDefaultObject.Settings = AddressableAssetSettings.Create(
-                    AddressableAssetSettingsDefaultObject.kDefaultConfigFolder,
-                    AddressableAssetSettingsDefaultObject.kDefaultConfigAssetName, true, true);
-            }
-
-            var settingsRepository = new SettingsRepository();
-            var entryRulesRepository = new EntryRulesRepository();
-
-            var addressableSettings = AddressableAssetSettingsDefaultObject.Settings;
-            var addressablesEditorAdapter = new AddressablesEditorAdapter(addressableSettings);
-            var assetDatabaseAdapter = new AssetDatabaseAdapter();
-            AssetProcessService = new AssetProcessService(settingsRepository, entryRulesRepository,
-                assetDatabaseAdapter,
-                addressablesEditorAdapter);
-            SettingsService = new SettingsService(settingsRepository);
-            EntryRulesService = new EntryRulesService(entryRulesRepository);
-            SettingsEditorPresenter = new SettingsEditorPresenter(SettingsService);
-            SettingsEditorController = new SettingsEditorController(SettingsService, AssetProcessService);
-            EntryRulesEditorPresenter = new EntryRulesEditorPresenter(EntryRulesService);
-            EntryRulesEditorController = new EntryRulesEditorController(EntryRulesService, AssetProcessService);
+            Refresh();
         }
 
-        public SettingsService SettingsService { get; }
-        public EntryRulesService EntryRulesService { get; }
-        public AssetProcessService AssetProcessService { get; }
+        public SettingsService SettingsService { get; private set; }
+        public EntryRulesService EntryRulesService { get; private set; }
+        public AssetProcessService AssetProcessService { get; private set; }
 
-        public SettingsEditorPresenter SettingsEditorPresenter { get; }
-        public SettingsEditorController SettingsEditorController { get; }
-        public EntryRulesEditorPresenter EntryRulesEditorPresenter { get; }
-        public EntryRulesEditorController EntryRulesEditorController { get; }
+        public SettingsEditorPresenter SettingsEditorPresenter { get; private set; }
+        public SettingsEditorController SettingsEditorController { get; private set; }
+        public EntryRulesEditorPresenter EntryRulesEditorPresenter { get; private set; }
+        public EntryRulesEditorController EntryRulesEditorController { get; private set; }
 
         public void Dispose()
         {
@@ -60,9 +39,14 @@ namespace EZAddresser.Editor.Core.UseCase
 
         public static CompositionRoot RequestInstance()
         {
-            if (_referenceCount++ == 0)
+            if (_referenceCount++ == 0 || _compositionRoot == null)
             {
                 _compositionRoot = new CompositionRoot();
+            }
+
+            if (!_compositionRoot.IsValid())
+            {
+                _compositionRoot.Refresh();
             }
 
             return _compositionRoot;
@@ -77,6 +61,38 @@ namespace EZAddresser.Editor.Core.UseCase
             }
 
             Assert.IsTrue(_referenceCount >= 0);
+        }
+
+        private bool IsValid()
+        {
+            return _addressableSettings != null;
+        }
+
+        private void Refresh()
+        {
+            // Create AddressableAssetSettings asset if it does not exists.
+            if (AddressableAssetSettingsDefaultObject.Settings == null)
+            {
+                AddressableAssetSettingsDefaultObject.Settings = AddressableAssetSettings.Create(
+                    AddressableAssetSettingsDefaultObject.kDefaultConfigFolder,
+                    AddressableAssetSettingsDefaultObject.kDefaultConfigAssetName, true, true);
+            }
+
+            var settingsRepository = new SettingsRepository();
+            var entryRulesRepository = new EntryRulesRepository();
+
+            _addressableSettings = AddressableAssetSettingsDefaultObject.Settings;
+            var addressablesEditorAdapter = new AddressablesEditorAdapter(_addressableSettings);
+            var assetDatabaseAdapter = new AssetDatabaseAdapter();
+            AssetProcessService = new AssetProcessService(settingsRepository, entryRulesRepository,
+                assetDatabaseAdapter,
+                addressablesEditorAdapter);
+            SettingsService = new SettingsService(settingsRepository);
+            EntryRulesService = new EntryRulesService(entryRulesRepository);
+            SettingsEditorPresenter = new SettingsEditorPresenter(SettingsService);
+            SettingsEditorController = new SettingsEditorController(SettingsService, AssetProcessService);
+            EntryRulesEditorPresenter = new EntryRulesEditorPresenter(EntryRulesService);
+            EntryRulesEditorController = new EntryRulesEditorController(EntryRulesService, AssetProcessService);
         }
     }
 }

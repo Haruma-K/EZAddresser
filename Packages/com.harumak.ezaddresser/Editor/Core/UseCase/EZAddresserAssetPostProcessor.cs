@@ -1,5 +1,6 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using System.Linq;
+using UnityEditor;
+using UnityEditor.AddressableAssets;
 
 namespace EZAddresser.Editor.Core.UseCase
 {
@@ -8,9 +9,27 @@ namespace EZAddresser.Editor.Core.UseCase
     /// </summary>
     public class EZAddresserAssetPostProcessor : AssetPostprocessor
     {
+        private const string AddressableAssetSettingsAssetName = "AdressableAssetSettings.asset";
+
         private static void OnPostprocessAllAssets(string[] importedAssetPaths, string[] deletedAssetPaths,
             string[] movedAssetPaths, string[] movedFromAssetPaths)
         {
+            var isSettingsExists = AddressableAssetSettingsDefaultObject.Settings != null;
+            var hasSettingsDeleted = deletedAssetPaths.Any(x => x.EndsWith(AddressableAssetSettingsAssetName));
+            if (!isSettingsExists || hasSettingsDeleted)
+            {
+                EditorApplication.delayCall += () =>
+                {
+                    if (AddressableAssetSettingsDefaultObject.Settings == null)
+                    {
+                        CompositionRoot.RequestInstance().AssetProcessService
+                            .ReprocessAllAssetsInAddressablesFolder(false);
+                        CompositionRoot.ReleaseInstance();
+                    }
+                };
+                return;
+            }
+
             var compositionRoot = CompositionRoot.RequestInstance();
             var assetProcessService = compositionRoot.AssetProcessService;
 
@@ -24,7 +43,6 @@ namespace EZAddresser.Editor.Core.UseCase
             {
                 processed |= assetProcessService.ProcessDeletedAsset(deletedAssetPath);
             }
-
 
             for (var i = 0; i < movedAssetPaths.Length; i++)
             {
