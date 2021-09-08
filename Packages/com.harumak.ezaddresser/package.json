@@ -1,7 +1,7 @@
 {
   "name": "com.harumak.ezaddresser",
   "displayName": "EZAddresser",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "unity": "2020.1",
   "license": "MIT",
   "dependencies": {
