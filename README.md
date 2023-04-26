@@ -1,5 +1,5 @@
 > **Warning**  
-> My company has released a more sophisticated tool called [Smart Addresser](https://github.com/CyberAgentGameEntertainment/SmartAddresser), so I recommend using that instead.
+> My company has released a more sophisticated tool called [Smart Addresser](https://github.com/CyberAgentGameEntertainment/SmartAddresser), so I recommend using it instead.
 > This tool will not be archived, but there are no plans for active improvements.
 
 <h1 align="center">EZAddresser</h1>
